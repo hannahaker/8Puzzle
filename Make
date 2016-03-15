@@ -1,0 +1,14 @@
+#Working...
+
+TARGETS := $(subst .lisp,,$(wildcard *.lisp))
+
+all:$(TARGETS)
+
+%:%.lisp
+	# supress echo with @
+    @echo [build]: creating $@
+    @buildapp --load $< --entry script:run --output $@
+    @echo [build]: created $@
+
+clean:
+    @rm -f $(TARGETS)
