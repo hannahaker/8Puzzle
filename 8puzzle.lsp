@@ -1,35 +1,45 @@
 (load (merge-pathnames "solvable.lsp" *load-truename*))
+(load (merge-pathnames "generate-successors.lsp" *load-truename*))
+(load (merge-pathnames "printstates.lsp" *load-truename*))
 
-(defun 8puzzle (puzzlelist)
-	(if (and (validinput puzzlelist 8) (solvable puzzlelist))
-		(
+(defun 8puzzle (puzzle)
+	(if (validinput puzzle 3)
+		
+			(if (solvable puzzle)
 			
-				;call search functions here with puzzlelist
+				(printstates (append (gen puzzle 3) (gen puzzle 3) (gen puzzle 3)) 3)
+				;call search functions here with puzzle
 				;output results from each function
 				
-				
-		)
-	(format t "Invalid input. Please check for correct input and that puzzle is solvable.")
+			 (format t "Puzzle not solvable.")
+			)
+	(format t "Invalid input.")
 	)
+(values)
 )
 
-(defun validinput (puzlist puztype)
-	(setf listvalid "T")
+(defun validinput (puzzle puzsize)
+	(let ((listvalid) (i))
+	(setf listvalid T)
 	;check for an actual list and correct length
-	(if (and (listp puzlist) (= (length puzlist) (1+ puztype)))
-		(dotimes (i (1+ puztype) ())
+	(if (and (listp puzzle) (= (length puzzle) (* puzsize puzsize)))
+		(dotimes (i (* puzsize puzsize) ())
 			;check for an actual number, correct range of numbers, and no repeated numbers
-			(if (and 
-					(numberp (nth i puzlist)) 
-					(>= (nth i puzlist) 0) 
-					(<= (nth i puzlist) puztype) 
-					(not (member (nth i puzlist) (cdr (nthcdr i puzlist)))) ) 
-					() (setf listvalid "NIL")
+			(if (numberp (nth i puzzle)) 
+					(if (and 
+					(>= (nth i puzzle) 0) 
+					(< (nth i puzzle) (* puzsize puzsize)) 
+					(not (member (nth i puzzle) (cdr (nthcdr i puzzle)))) )
+					
+					() (setf listvalid NIL)
+					)
+					(setf listvalid NIL)
 			)
 		)
-		(setf listvalid "NIL")
+  (setf listvalid NIL)
 	)
 	listvalid
+	)
 )
 
 ;(load 'input)
