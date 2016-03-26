@@ -9,6 +9,8 @@
 			
 				(printstates (append (gen puzzle 3) (gen puzzle 3) (gen puzzle 3)) 3)
 				;call search functions here with puzzle
+				(BFS puzzle)				
+
 				;output results from each function
 				
 			 (format t "Puzzle not solvable.")
