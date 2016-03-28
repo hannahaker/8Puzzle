@@ -1,20 +1,36 @@
 (load (merge-pathnames "solvable.lsp" *load-truename*))
 (load (merge-pathnames "generate-successors.lsp" *load-truename*))
 (load (merge-pathnames "printstates.lsp" *load-truename*))
+(load (merge-pathnames "astar.lsp" *load-truename*))
+;(load (merge-pathnames "DFID.lsp" *load-truename*))
+;(load (merge-pathnames "input.lsp" *load-truename*))
+;(load (merge-pathnames "BFS.lsp" *load-truename*))
 
 (defun 8puzzle (puzzle)
 	(if (validinput puzzle 3)
 		
 			(if (solvable puzzle)
-			
-				(printstates (append (gen puzzle 3) (gen puzzle 3) (gen puzzle 3)) 3)
+			(progn
 				;call search functions here with puzzle
-				(BFS puzzle)				
-
-				;output results from each function
-				
+				(astar puzzle 3)				
+				;(dfid puzzle 3)
+			)
 			 (format t "Puzzle not solvable.")
 			)
+	(format t "Invalid input.")
+	)
+(values)
+)
+
+(defun Npuzzle (puzzle N)
+	(if (validinput puzzle N)
+		
+			(progn
+				;call search functions here with puzzle
+				(astar puzzle N)				
+				;(dfid puzzle N)
+			)
+		
 	(format t "Invalid input.")
 	)
 (values)
@@ -44,10 +60,7 @@
 	)
 )
 
-;(load 'input)
 
-;(load 'BFS)
-;load other searches
 
 ;enter the program
 ;(8puzzle (read_start *args*))
