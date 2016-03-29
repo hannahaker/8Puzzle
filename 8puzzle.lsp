@@ -12,6 +12,7 @@
 			(if (solvable puzzle)
 			(progn
 				;call search functions here with puzzle
+				(BFS puzzle 3)
 				(astar puzzle 3)				
 				;(dfid puzzle 3)
 			)
