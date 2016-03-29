@@ -98,7 +98,7 @@
 		(setf curNode (car OPEN))
 		
 		;increment the number of expanded nodes
-		;(setf nodes-expanded (+ 1 nodes-expanded)) ;STATS
+		(setf nodes-expanded (+ 1 nodes-expanded)) 
 		(setf OPEN (cdr OPEN))
 		(setf CLOSED (cons curNode CLOSED))
 		
@@ -111,17 +111,19 @@
 								   :depth (1+ (node-depth curNode))))
 								   
 			;increment the number of generated nodes
-			;(setf nodes-generated (+ 1 nodes-generated)) ;STATS
+			(setf nodes-generated (+ 1 nodes-generated)) 
 			
 			; if the node is not on OPEN or CLOSED, and still within bound
 			(if (and (<= (node-depth child) depthBound)
 				(and (not (member child OPEN   :test #'equal-states))
 				(not (member child CLOSED :test #'equal-states))))
 				
-				
-				;(setf nodes-distinct (+ 1 nodes-distinct)) ;STATS
-				;add to start of OPEN list
-				(setf OPEN (cons child OPEN))
+				(progn
+					;increment the number of distinct nodes
+					(setf nodes-distinct (+ 1 nodes-distinct)) 
+					;add to start of OPEN list
+					(setf OPEN (cons child OPEN))
+				)
 			)
 		)
 	)
@@ -133,19 +135,9 @@
   Description: 		
 	
 		This function utilizes the dfs function contained in this document.
-	By adding a bound to the dfs 
+	By adding a bound to the dfs. Utilizing the speed of DFS with the
+	completeness of BFS.
 	
-		This dfs function performs a depth-first search to find the goal
-	state of an N*N tile puzzle using an OPEN and CLOSED list to keep track 
-	of states of the puzzle that were expanded (checked).
-
-    Note: 
-		See the dfid function which uses this function and adds iterative
-	deepening. For the tile puzzle, this function alone will not find the path
-	to the goal state in a reasonable time. By implementing a bound on this
-	dfs search we can utilize the speed of the DFS with the exhaustiveness of
-	the BFS.
-		
   Parameters: 
 	start 	   - A puzzle state, in list form
 	N   - The size of the puzzle.
