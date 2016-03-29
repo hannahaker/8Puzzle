@@ -28,6 +28,9 @@ Modifications:
 ; Node structure: stores state and parent.
 (defstruct node state parent)
 
+; Node structure: stores state and parent.
+(defstruct node state parent)
+
 ; Test if two nodes have the same state.
 (defun equal-states (n1 n2) (equal (node-state n1) (node-state n2)))
 
@@ -37,7 +40,6 @@ Modifications:
 ; Given a start state and a search type (BFS or DFS), return a path from the start to the goal.
 
 (defun bfs (start)
-
     (do*                                                    ; note use of sequential DO*
         (                                                   ; initialize local loop vars
             (curNode (make-node :state start :parent nil))  ; current node: (start nil)
@@ -57,7 +59,8 @@ Modifications:
         (setf CLOSED (cons curNode CLOSED))
 
         ; add successors of current node to OPEN
-        (dolist (child (generate-successors (node-state curNode)))
+        (dolist (child (generate-successors (node-state curNode) 3))
+	;PUT THREE HERE??
 
             ; for each child node
             (setf child (make-node :state child :parent (node-state curNode)))
@@ -68,8 +71,7 @@ Modifications:
 
                 ; add it to the OPEN list
                 ; BFS - add to end of OPEN list (queue)
-                    (setf OPEN (append OPEN (list child)))
-                
+                    (setf OPEN (append OPEN (list child)))   
             )
         )
     )
@@ -80,6 +82,7 @@ Modifications:
 ; Build-solution takes a state and a list of (state parent) pairs
 ; and constructs the list of states that led to the current state
 ; by tracing back through the parents to the start node (nil parent).
+
 (defun build-solution (node node-list)
     (do
         ((path (list (node-state node))))        ; local loop var
