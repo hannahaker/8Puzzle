@@ -28,6 +28,7 @@
 		
 			(progn
 				;call search functions here with puzzle
+				(BFS puzzle N)				
 				(astar puzzle N)				
 				;(dfid puzzle N)
 			)
