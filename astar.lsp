@@ -56,7 +56,7 @@ Written Spring 2016 for CSC447/547 AI class.
 		(setf sum (manhattanDistance state N) )
 		;dotimes N*N (8 puzzle is 3 by 3, N=3)
 		(if (= N 3)
-			(prodepth 
+			(progn
 				(dotimes (j 7 ())
 					(if (= (+ 1 (nth (nth j order) state)) (nth (nth (+ j 1) order) state))
 					() (setf sum (+ sum 2)))
@@ -64,7 +64,7 @@ Written Spring 2016 for CSC447/547 AI class.
 				(if (= (nth 4 state) 0 ) 
 				() (setf sum (+ sum 1)))
 			)
-			(prodepth
+			(progn
 				(dotimes (i (- (* N N) 2) ())
 					(if (= (+ 1 (nth i state)) (nth (+ i 1) state))
 					()  (setf sum (+ sum 2)))
@@ -147,7 +147,7 @@ Written Spring 2016 for CSC447/547 AI class.
 			(not (member child CLOSED :test #'equal-states)))
 			
 			; add it to the OPEN list
-			(prodepth
+			(progn
 				(setf *nodes-distinct* (+ 1 *nodes-distinct* ))
 				(setf (node-depth child) (+ 1 (node-depth curNode)))
 				(setf (node-fn child) (+ 1 (node-depth curNode) (funcall heuristic (node-state child) N)))

@@ -27,7 +27,7 @@ Modifications:
 (defun bfs (start N)
 	(let ((solution))
 			;the solution will be the list returned from the dfs function.
-		(setf solution (bfs start N))	
+		(setf solution (search_bfs start N))	
 		
 		(format t " BFS graph search~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
 		(- (length solution) 1) *nodes-generated* *nodes-distinct* *nodes-expanded* )
