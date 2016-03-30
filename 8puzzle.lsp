@@ -8,14 +8,16 @@
 (load (merge-pathnames "BFS.lsp" *load-truename*))
 
 #|*****************************************************************************  
-  Function:		8puzzle 
+  Authors: Hannah Aker, Derek Lane, Savoy Schuler
+  
+  Function: 8puzzle 
   
   Description: 		
 	
-		This function checks if a puzzle state is a valid puzzle. The function
-	Also checks if the puzzle state is solvable by using the function provided
-	at www.mcs.sdsmt.edu/csc447/Assignments/PA2/solvable.lsp. Lastly, the 
-	function calls the three searches BFS, DFS, and A*
+	This function checks if a puzzle state is a valid puzzle. The function
+	Also checks if the puzzle state is solvable by using the function 
+	provided at www.mcs.sdsmt.edu/csc447/Assignments/PA2/solvable.lsp. 
+	Lastly, the function calls the three searches BFS, DFS, and A*.
 	
   Parameters: 
 	puzzle - a puzzle state
@@ -40,12 +42,15 @@
 )
 
 #|*****************************************************************************  
-  Function:		Npuzzle 
+  Authors: Hannah Aker, Derek Lane, Savoy Schuler  
+
+  Function: Npuzzle 
   
   Description: 		
 	
-		This function checks if a NxN puzzle is a valid puzzle. Then calls the
-	three searches BFS, DFS, A*.
+	This function calls validinput to check check that puzzle is a valid NxN
+	puzzle. If the the puzzle is valid, this funciton will be returned to to
+	call all three searches: BFS, DFS, A*.
 	
   Parameters: 
 	puzzle - a puzzle state
@@ -57,7 +62,7 @@
 	
 			(progn
 				;call search functions here with puzzle
-(			BFS puzzle N)				
+				(BFS puzzle N)				
 				(astar puzzle N)				
 				(dfid puzzle N)
 			)
@@ -68,18 +73,20 @@
 )
 
 #|*****************************************************************************  
-  Function:		validinput 
+  Authors: Hannah Aker, Derek Lane, Savoy Schuler
+
+  Function: validinput 
   
   Description: 		
 	
-		This function checks if the puzzle provided is valid for either
-	8x8 or NxN.
+	This function checks if the puzzle provided is valid for either
+	3x3 or NxN. Exits if not valid. Valid true is returned.
 	
   Parameters: 
 	puzsize - size of the puzzle
 
-  Returns: T   - if a valid puzzle
-		   nil - if not a valid puzzle
+  	Returns: T   - if a valid puzzle
+		 nil - if not a valid puzzle
 *****************************************************************************|#
 (defun validinput (puzzle puzsize)
 	(let ((listvalid) (i))
@@ -102,14 +109,6 @@
 			(setf listvalid NIL)
 		)
 		listvalid
-		)
 	)
+)
 	
-	
-	
-	;enter the program
-	(8puzzle (input *args*))
-	;if (length *ARGS*) is 0, the file was loaded in clisp or a filename was not specified, so prompt user for puzzle list
-	;after the initial load, the 8puzzle funtion can be called with an ordinary puzzlelist
-	;if (length *ARGS*) is 1, try to open file, if fail, print usage statement
-	;if (length *ARGS*) is greater than 1, print usage statement

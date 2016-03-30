@@ -34,6 +34,12 @@ solution using the parent-child relation ships stored in the node struct.
 The bfs function was based on the example provided by Dr. John Weiss but has 
 been modified to include formatting and outputting statistics and a graphical 
 represenation of the solution path.
+
+  Parameters: 
+	puzzle - a puzzle state
+	GOAL
+
+  Returns: None
 ********************************************************************************
 |#
 
