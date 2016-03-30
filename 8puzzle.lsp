@@ -1,10 +1,10 @@
-(load (merge-pathnames "solvable.lsp" *load-truename*))
-(load (merge-pathnames "generate-successors.lsp" *load-truename*))
+
+(load (merge-pathnames "utilities.lsp" *load-truename*))
 (load (merge-pathnames "printstates.lsp" *load-truename*))
 (load (merge-pathnames "astar.lsp" *load-truename*))
-;(load (merge-pathnames "DFID.lsp" *load-truename*))
+(load (merge-pathnames "DFID.lsp" *load-truename*))
 ;(load (merge-pathnames "input.lsp" *load-truename*))
-;(load (merge-pathnames "BFS.lsp" *load-truename*))
+(load (merge-pathnames "BFS.lsp" *load-truename*))
 
 (defun 8puzzle (puzzle)
 	(if (validinput puzzle 3)
