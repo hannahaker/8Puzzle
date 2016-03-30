@@ -22,7 +22,7 @@ Written Spring 2016 for CSC447/547 AI class.
 
 ;Admissible Heuristic #1: Misplaced Tiles - sum number of tiles not in correct place
 (defun misplacedTiles (state N) 
-	(let ((sum 0) (goal (nth (- N 3) goal-states)))
+	(let ((sum 0) (goal (nth (- N 3) *goal-states*)))
 		;dotimes N*N (8 puzzle is 3 by 3, N=3)
 		(dotimes (i (* N N) ())
 			;compare nth number in goal and current state
@@ -36,7 +36,7 @@ Written Spring 2016 for CSC447/547 AI class.
 )
 ;Admissible Heuristic #2: Manhattan Distance - sum of number of rows and columns each tile is away from its correct place
 (defun manhattanDistance (state N) 
-	(let ((sum 0) (goal (nth (- N 3) goal-states)) (j))
+	(let ((sum 0) (goal (nth (- N 3) *goal-states*)) (j))
 		;dotimes N*N (8 puzzle is 3 by 3, N=3)
 		(dotimes (i (* N N) ())
 			;get position of (nth i state) in goal 
@@ -52,7 +52,7 @@ Written Spring 2016 for CSC447/547 AI class.
 ;Inadmissible Heuristic: Nilsson's Sequence - sum of Manhattan distance and sequence score ( +2 for each tile not followed by correct successor and +1 for the zero in the wrong place)
 (defun nilssonsSequence (state N) 
 	;run manhattanDistance heuristic
-	(let ((sum 0) (goal (nth (- N 3) goal-states)) (i) (j) (order '(0 1 2 5 8 7 6 3)) )
+	(let ((sum 0) (goal (nth (- N 3) *goal-states*)) (i) (j) (order '(0 1 2 5 8 7 6 3)) )
 		(setf sum (manhattanDistance state N) )
 		;dotimes N*N (8 puzzle is 3 by 3, N=3)
 		(if (= N 3)
@@ -84,17 +84,17 @@ Written Spring 2016 for CSC447/547 AI class.
 	(let ((solution))
 		(setf solution (search_astar start 'misplacedTiles N))
 		(format t " A* graph search (admissible heuristic: misplaced tiles)~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
-		(- (length solution) 1) nodes-generated nodes-distinct nodes-expanded )
+		(- (length solution) 1) *nodes-generated* *nodes-distinct* *nodes-expanded* )
 		(printstates solution N)
 		
 		(setf solution (search_astar start 'manhattanDistance N))
 		(format t " A* graph search (admissible heuristic: Manhattan distance)~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
-		(- (length solution) 1) nodes-generated nodes-distinct nodes-expanded )
+		(- (length solution) 1) *nodes-generated* *nodes-distinct* *nodes-expanded* )
 		(printstates solution N)
 		
 		(setf solution (search_astar start 'nilssonsSequence N))
 		(format t " A* graph search (inadmissible heuristic: Nilsson's Sequence)~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
-		(- (length solution) 1) nodes-generated nodes-distinct nodes-expanded )
+		(- (length solution) 1) *nodes-generated* *nodes-distinct* *nodes-expanded* )
 		(printstates solution N)
 		
 	)
@@ -104,9 +104,9 @@ Written Spring 2016 for CSC447/547 AI class.
 
 ; Given a start state and a search type (BFS or DFS), return a path from the start to the goal.
 (defun search_astar (start heuristic N)
-	(setf nodes-distinct 0) 
-	(setf nodes-generated 0)
-	(setf nodes-expanded 0)
+	(setf *nodes-distinct* 0) 
+	(setf *nodes-generated* 0)
+	(setf *nodes-expanded* 0)
 	
 	(do*                                                   
 		(                                                   ; initialize local loop vars
@@ -131,7 +131,7 @@ Written Spring 2016 for CSC447/547 AI class.
 				() 
 			)
 		)
-		(setf nodes-expanded (+ 1 nodes-expanded) )
+		(setf *nodes-expanded* (+ 1 *nodes-expanded*) )
 		(setf OPEN (remove curNode OPEN))
 		(setf CLOSED (cons curNode CLOSED))
 		
@@ -140,7 +140,7 @@ Written Spring 2016 for CSC447/547 AI class.
 			
 			; for each child node
 			(setf child (make-node :state child :parent (node-state curNode) ) )
-			(setf nodes-generated (+ 1 nodes-generated))
+			(setf *nodes-generated* (+ 1 *nodes-generated*))
 			
 			; if the node is not on OPEN or CLOSED
 			(if (and (not (member child OPEN   :test #'equal-states))
@@ -148,7 +148,7 @@ Written Spring 2016 for CSC447/547 AI class.
 			
 			; add it to the OPEN list
 			(prodepth
-				(setf nodes-distinct (+ 1 nodes-distinct ))
+				(setf *nodes-distinct* (+ 1 *nodes-distinct* ))
 				(setf (node-depth child) (+ 1 (node-depth curNode)))
 				(setf (node-fn child) (+ 1 (node-depth curNode) (funcall heuristic (node-state child) N)))
 				(setf OPEN (append OPEN (list child)))

@@ -14,7 +14,7 @@
 				;call search functions here with puzzle
 				(BFS puzzle 3)
 				(astar puzzle 3)				
-				;(dfid puzzle 3)
+				(dfid puzzle 3)
 			)
 			 (format t "Puzzle not solvable.")
 			)
@@ -30,7 +30,7 @@
 				;call search functions here with puzzle
 				(BFS puzzle N)				
 				(astar puzzle N)				
-				;(dfid puzzle N)
+				(dfid puzzle N)
 			)
 		
 	(format t "Invalid input.")
