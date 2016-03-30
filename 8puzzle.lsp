@@ -1,10 +1,45 @@
-;********************************* 8puzzle.lsp ********************************
+#|********************************* 8puzzle.lsp *******************************
+	Program 2 - 8 Puzzle: A*, BFS, and DFID Solution Search
+
+	Authors: Hannah Aker, Derek Lane, Savoy Schuler
+
+	Date: March 29, 2016
+
+	Professor: Dr. John Weiss
+
+	Course: CSC 447 - M001
+
+	Usage Instructions: clisp 8puzzle <optional - puzzleFile>
+
+	Example Input:	clisp 8puzzle easy.puz
+
+	Bugs: None
+	
+	Todo: None
+
+	Program Details:
+
+	This program is designed to produce the optimal solution to the 8 Puzzle
+	tile game. A puzzle may be entered in interpreter mode or as a file 
+	(shown in "Usage"). The only bound on puzzle size is that it must be NxN
+	and comprised of integers 0 to N where 0 represents the blank puzzle
+	space. 
+
+	Either run option will read and store the puzzle as a row major list.
+	The list will be copied and passed to three different search algorithms:
+	A*, BFS, and DFID. Each puzzle will iteratively solve for the most 
+	optimal path. A parent-child node structure is used to store the path
+	from the solution state back to the goal state. Each search will count
+	the number of generations of nodes produced and at the search's 
+	conclusion will output the search results in addition to the number of 
+	moves needed to reach the optimal solution. 
+
+*****************************************************************************|#
+
 (load (merge-pathnames "utilities.lsp" *load-truename*))
-(load (merge-pathnames "printstates.lsp" *load-truename*))
 (load (merge-pathnames "astar.lsp" *load-truename*))
 (load (merge-pathnames "DFID.lsp" *load-truename*))
 (load (merge-pathnames "input.lsp" *load-truename*))
-(load (merge-pathnames "fileio.lsp" *load-truename*))
 (load (merge-pathnames "BFS.lsp" *load-truename*))
 
 #|*****************************************************************************  
