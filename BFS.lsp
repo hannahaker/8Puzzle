@@ -50,7 +50,7 @@ Modifications:
 		)
 		
 		; termination condition - return solution path when goal is found
-		((goal-state? (node-state curNode)) (build-solution curNode CLOSED))
+		((goal-state? (node-state curNode) N) (build-solution curNode CLOSED))
 		
 		; loop body
 		(when (null OPEN) (return nil))             ; no solution

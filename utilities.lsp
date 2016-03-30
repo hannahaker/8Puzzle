@@ -1,7 +1,7 @@
 #|****************************** GLOBALS ************************************|#
 
 (defvar *goal-states* (list '(1 2 3 8 0 4 7 6 5) 						 
-						  '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0))) 
+						  '(1 2 3 4 8 7 6 5 9 10 11 12 0 15 14 13))) 
 
 ;globals for search statistics
 (defvar *nodes-distinct* 0)	
@@ -27,7 +27,7 @@
   Returns: T - If the provided list is identical to the goal state.
 		   NIL - If the provided list is not identical to the goal state.
 *****************************************************************************|#
-(defun goal-state? (L) (equal L '(1 2 3 8 0 4 7 6 5)))
+(defun goal-state? (L N) (equal L (nth (- N 3) *goal-states*)))
 
 #|*****************************************************************************
   Author: 		Dr. John Weiss
