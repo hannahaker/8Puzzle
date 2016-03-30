@@ -146,4 +146,6 @@
 		listvalid
 	)
 )
+
+(8puzzle (input *args*))
 	
