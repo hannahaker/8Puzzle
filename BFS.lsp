@@ -36,10 +36,11 @@ been modified to include formatting and outputting statistics and a graphical
 represenation of the solution path.
 
 Parameters: 
-puzzle - a puzzle state
-GOAL
+	start - the initial puzzle state
+	N - the size of the puzzle (uniform in either 2-dimensional direction)
 
 Returns: None
+
 ********************************************************************************
 |#
 
@@ -95,6 +96,13 @@ tracking and outputing after returning to the bfs function.
 Line lengths exceeding 80 characters were attempted to be avoided, but doing so
 unreasonbly complicated readability of the code. Thus it is noted readability 
 was prefered over compressing the length of individual lines. 
+
+Parameters: 
+	start - the initial puzzle state
+	N - the size of the puzzle (uniform in either 2-dimensional direction)
+
+Returns: solution-path - a list of list of states from start to goal
+
 ********************************************************************************
 |#
 
@@ -155,4 +163,3 @@ was prefered over compressing the length of individual lines.
 		)
 	)
 )
-
