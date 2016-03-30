@@ -1,31 +1,31 @@
 #|********************************* input.lsp **********************************
 
-  Authors: Hannah Aker, Derek Lane, Savoy Schuler
-  
-  Function: input 
-  
-  Description: 		
-	
-	This function reads the number of command line arguments and determines
-	handling for input. 
+Authors: Hannah Aker, Derek Lane, Savoy Schuler
 
-	If an excess of 1 argument is entered, usage is 
-	printed and the program halts. Else if 1 argument is entered, it is 
-	required to be a puzzle file and will be passed to fileio.lsp for 
-	opening, reading, and storing. An error will be printed if the argument
-	given is not a proper file. 
+Function: input 
 
-	If no arguments are given, the program enters interpreter mode and waits
-	for an NxN puzzle to be entered into the terminal. 
+Description: 		
 
-	If more than two arguments are entered, the program prints usage and 
-	halts. 
+This function reads the number of command line arguments and determines
+handling for input. 
 
-	
-  Parameters: 
-	args - command lines arguments
+If an excess of 1 argument is entered, usage is 
+printed and the program halts. Else if 1 argument is entered, it is 
+required to be a puzzle file and will be passed to fileio.lsp for 
+opening, reading, and storing. An error will be printed if the argument
+given is not a proper file. 
 
- 	Returns: puzList - a list holding the puzzle in row major order
+If no arguments are given, the program enters interpreter mode and waits
+for an NxN puzzle to be entered into the terminal. 
+
+If more than two arguments are entered, the program prints usage and 
+halts. 
+
+
+Parameters: 
+args - command lines arguments
+
+Returns: puzList - a list holding the puzzle in row major order
 *****************************************************************************|#
 
 (defun input(args)
@@ -35,7 +35,7 @@
 				(setf filename (merge-pathnames (car args) *load-truename*))
 				
 				(setf puzList (fileio filename))
-
+				
 			)
 			
 			
@@ -49,6 +49,6 @@
 		)	
 		puzList
 	)
-
+	
 )
 

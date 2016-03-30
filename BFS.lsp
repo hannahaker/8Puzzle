@@ -35,11 +35,11 @@ The bfs function was based on the example provided by Dr. John Weiss but has
 been modified to include formatting and outputting statistics and a graphical 
 represenation of the solution path.
 
-  Parameters: 
-	puzzle - a puzzle state
-	GOAL
+Parameters: 
+puzzle - a puzzle state
+GOAL
 
-  Returns: None
+Returns: None
 ********************************************************************************
 |#
 
@@ -111,10 +111,10 @@ was prefered over compressing the length of individual lines.
 		(   
 			; current node: (start nil)
 			(curNode (make-node :state start :parent nil))  
-
+			
 			; OPEN list:    ((start nil))
 			(OPEN (list curNode)) 
-                          
+			
 			; CLOSED list:  ( )
 			(CLOSED nil)                                    
 		)
