@@ -82,6 +82,8 @@ N   - The size of the puzzle.
 )
 
 #|*****************************************************************************  
+Authors: Hannah Aker, Derek Lane, Savoy Schuler
+
 Function:		 dfid
 
 Description: 		
@@ -96,24 +98,24 @@ N   - The size of the puzzle.
 *****************************************************************************|#
 (defun dfid (start N)
 	(let (solution)
-	(do 					;initialize local loop variables
-		(
-			(depthBound 3)	;the static bound to search until.
-			 ;an list to hold the solution.
+		(do 					;initialize local loop variables
+			(
+				(depthBound 3)	;the static bound to search until.
+				;an list to hold the solution.
+			)
+			
+			;if the solution list is not empty, we have a solution
+			((not (null solution )) solution ) 
+			
+			;increment the depthBound with each iteration.
+			(setf depthBound(+ 1 depthBound) ) 
+			
+			;the solution will be the list returned from the dfs function.
+			(setf solution (dfs start depthBound N))	
+			
 		)
 		
-		;if the solution list is not empty, we have a solution
-		((not (null solution )) solution ) 
-		
-		;increment the depthBound with each iteration.
-		(setf depthBound(+ 1 depthBound) ) 
-		
-		;the solution will be the list returned from the dfs function.
-		(setf solution (dfs start depthBound N))	
-
-	)
-	
-	(format t " DFID graph search~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
+		(format t " DFID graph search~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
 		(- (length solution) 1) *nodes-generated* *nodes-distinct* *nodes-expanded* )
 		(printstates solution N)
 	)
