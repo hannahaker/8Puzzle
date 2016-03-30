@@ -95,10 +95,11 @@ start 	   - A puzzle state, in list form
 N   - The size of the puzzle.
 *****************************************************************************|#
 (defun dfid (start N)
+	(let (solution)
 	(do 					;initialize local loop variables
 		(
 			(depthBound 3)	;the static bound to search until.
-			(solution '() ) ;an list to hold the solution.
+			 ;an list to hold the solution.
 		)
 		
 		;if the solution list is not empty, we have a solution
@@ -109,8 +110,10 @@ N   - The size of the puzzle.
 		
 		;the solution will be the list returned from the dfs function.
 		(setf solution (dfs start depthBound N))	
-		
-		(format t " DFID graph search~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
+
+	)
+	
+	(format t " DFID graph search~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
 		(- (length solution) 1) *nodes-generated* *nodes-distinct* *nodes-expanded* )
 		(printstates solution N)
 	)

@@ -66,7 +66,7 @@
 	
 	
 	;enter the program
-	;(8puzzle (read_start *args*))
+	(8puzzle (input *args*))
 	;if (length *ARGS*) is 0, the file was loaded in clisp or a filename was not specified, so prompt user for puzzle list
 	;after the initial load, the 8puzzle funtion can be called with an ordinary puzzlelist
 	;if (length *ARGS*) is 1, try to open file, if fail, print usage statement

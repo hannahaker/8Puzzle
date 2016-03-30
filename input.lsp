@@ -2,8 +2,10 @@
 	(let ((filename) (puzList))
 		(cond
 			((= (length args) 1)    
-				(setf filename (car args))
+				(setf filename (merge-pathnames (car args) *load-truename*))
+				
 				(setf puzList (fileio filename))
+
 			)
 			
 			
@@ -14,6 +16,9 @@
 			; else statement prints usage statement
 			(t "true")
 			
-		)
+		)	
+		puzList
 	)
+
 )
+
