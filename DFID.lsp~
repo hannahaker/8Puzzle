@@ -13,10 +13,6 @@ This dfs function performs a depth-first search to find the goal
 state of an N*N tile puzzle using an OPEN and CLOSED list to keep track 
 of states of the puzzle that were expanded (checked).
 
-Modifications by: Hannah Aker, Derek Lane, Savoy Schuler
-
-"generate-successors" and the global node list were defined as requested.
-
 Note: 
 See the dfid function which utilizes this function and adds iterative
 deepening. For the tile puzzle, this function alone will not find the path
