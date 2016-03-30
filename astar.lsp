@@ -19,23 +19,10 @@ Written Spring 2016 for CSC447/547 AI class.
 |#
 
 ;--------------------------------------------------------------------------
-(defun goal-state? (L) (equal L '(1 2 3 8 0 4 7 6 5)))
-
-(defvar goal-states (list '(1 2 3 8 0 4 7 6 5) '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0)))
-
-(defvar nodes-distinct 0) 
-(defvar nodes-generated 0)
-(defvar nodes-expanded 0)
-
-; Node structure: stores state and parent.
-(defstruct node state parent gn fn)
-
-; Test if two nodes have the same state.
-(defun equal-states (n1 n2) (equal (node-state n1) (node-state n2)))
 
 ;Admissible Heuristic #1: Misplaced Tiles - sum number of tiles not in correct place
 (defun misplacedTiles (state N) 
-	(let ((sum 0) (goal (nth (- N 3) goal-states)))
+	(let ((sum 0) (goal (nth (- N 3) *goal-states*)))
 		;dotimes N*N (8 puzzle is 3 by 3, N=3)
 		(dotimes (i (* N N) ())
 			;compare nth number in goal and current state
@@ -49,7 +36,7 @@ Written Spring 2016 for CSC447/547 AI class.
 )
 ;Admissible Heuristic #2: Manhattan Distance - sum of number of rows and columns each tile is away from its correct place
 (defun manhattanDistance (state N) 
-	(let ((sum 0) (goal (nth (- N 3) goal-states)) (j))
+	(let ((sum 0) (goal (nth (- N 3) *goal-states*)) (j))
 		;dotimes N*N (8 puzzle is 3 by 3, N=3)
 		(dotimes (i (* N N) ())
 			;get position of (nth i state) in goal 
@@ -65,11 +52,11 @@ Written Spring 2016 for CSC447/547 AI class.
 ;Inadmissible Heuristic: Nilsson's Sequence - sum of Manhattan distance and sequence score ( +2 for each tile not followed by correct successor and +1 for the zero in the wrong place)
 (defun nilssonsSequence (state N) 
 	;run manhattanDistance heuristic
-	(let ((sum 0) (goal (nth (- N 3) goal-states)) (i) (j) (order '(0 1 2 5 8 7 6 3)) )
+	(let ((sum 0) (goal (nth (- N 3) *goal-states*)) (i) (j) (order '(0 1 2 5 8 7 6 3)) )
 		(setf sum (manhattanDistance state N) )
 		;dotimes N*N (8 puzzle is 3 by 3, N=3)
 		(if (= N 3)
-			(progn 
+			(progn
 				(dotimes (j 7 ())
 					(if (= (+ 1 (nth (nth j order) state)) (nth (nth (+ j 1) order) state))
 					() (setf sum (+ sum 2)))
@@ -97,17 +84,17 @@ Written Spring 2016 for CSC447/547 AI class.
 	(let ((solution))
 		(setf solution (search_astar start 'misplacedTiles N))
 		(format t " A* graph search (admissible heuristic: misplaced tiles)~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
-		(- (length solution) 1) nodes-generated nodes-distinct nodes-expanded )
+		(- (length solution) 1) *nodes-generated* *nodes-distinct* *nodes-expanded* )
 		(printstates solution N)
 		
 		(setf solution (search_astar start 'manhattanDistance N))
 		(format t " A* graph search (admissible heuristic: Manhattan distance)~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
-		(- (length solution) 1) nodes-generated nodes-distinct nodes-expanded )
+		(- (length solution) 1) *nodes-generated* *nodes-distinct* *nodes-expanded* )
 		(printstates solution N)
 		
 		(setf solution (search_astar start 'nilssonsSequence N))
 		(format t " A* graph search (inadmissible heuristic: Nilsson's Sequence)~% --------------~% Solution found in ~d moves~% ~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" 
-		(- (length solution) 1) nodes-generated nodes-distinct nodes-expanded )
+		(- (length solution) 1) *nodes-generated* *nodes-distinct* *nodes-expanded* )
 		(printstates solution N)
 		
 	)
@@ -117,20 +104,20 @@ Written Spring 2016 for CSC447/547 AI class.
 
 ; Given a start state and a search type (BFS or DFS), return a path from the start to the goal.
 (defun search_astar (start heuristic N)
-	(setf nodes-distinct 0) 
-	(setf nodes-generated 0)
-	(setf nodes-expanded 0)
+	(setf *nodes-distinct* 0) 
+	(setf *nodes-generated* 0)
+	(setf *nodes-expanded* 0)
 	
 	(do*                                                   
 		(                                                   ; initialize local loop vars
-			(curNode (make-node :state start :parent nil :gn 0 :fn 0))  ; current node: (start nil)
+			(curNode (make-node :state start :parent nil :depth 0 :fn 0))  ; current node: (start nil)
 			(OPEN (list curNode))                           ; OPEN list:    ((start nil))
 			(CLOSED nil)                                    ; CLOSED list:  ( )
 			(i)
 		)
 		
 		; termination condition - return solution path when goal is found
-		((goal-state? (node-state curNode)) (build-solution curNode CLOSED))
+		((goal-state? (node-state curNode) N) (build-solution curNode CLOSED))
 		
 		; loop body
 		(when (null OPEN) (return nil))             ; no solution
@@ -144,7 +131,7 @@ Written Spring 2016 for CSC447/547 AI class.
 				() 
 			)
 		)
-		(setf nodes-expanded (+ 1 nodes-expanded) )
+		(setf *nodes-expanded* (+ 1 *nodes-expanded*) )
 		(setf OPEN (remove curNode OPEN))
 		(setf CLOSED (cons curNode CLOSED))
 		
@@ -153,7 +140,7 @@ Written Spring 2016 for CSC447/547 AI class.
 			
 			; for each child node
 			(setf child (make-node :state child :parent (node-state curNode) ) )
-			(setf nodes-generated (+ 1 nodes-generated))
+			(setf *nodes-generated* (+ 1 *nodes-generated*))
 			
 			; if the node is not on OPEN or CLOSED
 			(if (and (not (member child OPEN   :test #'equal-states))
@@ -161,9 +148,9 @@ Written Spring 2016 for CSC447/547 AI class.
 			
 			; add it to the OPEN list
 			(progn
-				(setf nodes-distinct (+ 1 nodes-distinct ))
-				(setf (node-gn child) (+ 1 (node-gn curNode)))
-				(setf (node-fn child) (+ 1 (node-gn curNode) (funcall heuristic (node-state child) N)))
+				(setf *nodes-distinct* (+ 1 *nodes-distinct* ))
+				(setf (node-depth child) (+ 1 (node-depth curNode)))
+				(setf (node-fn child) (+ 1 (node-depth curNode) (funcall heuristic (node-state child) N)))
 				(setf OPEN (append OPEN (list child)))
 			)
 			
@@ -173,27 +160,3 @@ Written Spring 2016 for CSC447/547 AI class.
 		
 	)
 )	
-;--------------------------------------------------------------------------
-
-; Build-solution takes a state and a list of (state parent) pairs
-; and constructs the list of states that led to the current state
-; by tracing back through the parents to the start node (nil parent).
-(defun build-solution (node node-list)
-	(do
-		((path (list (node-state node))))        ; local loop var
-		((null (node-parent node)) path)         ; termination condition
-		
-		; find the parent of the current node
-		(setf node (member-state (node-parent node) node-list))
-		
-		; add it to the path
-		(setf path (cons (node-state node) path))
-	)
-)
-
-; Member-state looks for a node on the node-list with the same state.
-(defun member-state (state node-list)
-	(dolist (node node-list)
-		(when (equal state (node-state node)) (return node))
-	)
-)
