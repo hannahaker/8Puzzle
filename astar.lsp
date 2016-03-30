@@ -19,19 +19,6 @@ Written Spring 2016 for CSC447/547 AI class.
 |#
 
 ;--------------------------------------------------------------------------
-(defun goal-state? (L) (equal L '(1 2 3 8 0 4 7 6 5)))
-
-(defvar goal-states (list '(1 2 3 8 0 4 7 6 5) '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0)))
-
-(defvar nodes-distinct 0) 
-(defvar nodes-generated 0)
-(defvar nodes-expanded 0)
-
-; Node structure: stores state and parent.
-(defstruct node state parent gn fn)
-
-; Test if two nodes have the same state.
-(defun equal-states (n1 n2) (equal (node-state n1) (node-state n2)))
 
 ;Admissible Heuristic #1: Misplaced Tiles - sum number of tiles not in correct place
 (defun misplacedTiles (state N) 
@@ -69,7 +56,7 @@ Written Spring 2016 for CSC447/547 AI class.
 		(setf sum (manhattanDistance state N) )
 		;dotimes N*N (8 puzzle is 3 by 3, N=3)
 		(if (= N 3)
-			(progn 
+			(prodepth 
 				(dotimes (j 7 ())
 					(if (= (+ 1 (nth (nth j order) state)) (nth (nth (+ j 1) order) state))
 					() (setf sum (+ sum 2)))
@@ -77,7 +64,7 @@ Written Spring 2016 for CSC447/547 AI class.
 				(if (= (nth 4 state) 0 ) 
 				() (setf sum (+ sum 1)))
 			)
-			(progn
+			(prodepth
 				(dotimes (i (- (* N N) 2) ())
 					(if (= (+ 1 (nth i state)) (nth (+ i 1) state))
 					()  (setf sum (+ sum 2)))
@@ -123,7 +110,7 @@ Written Spring 2016 for CSC447/547 AI class.
 	
 	(do*                                                   
 		(                                                   ; initialize local loop vars
-			(curNode (make-node :state start :parent nil :gn 0 :fn 0))  ; current node: (start nil)
+			(curNode (make-node :state start :parent nil :depth 0 :fn 0))  ; current node: (start nil)
 			(OPEN (list curNode))                           ; OPEN list:    ((start nil))
 			(CLOSED nil)                                    ; CLOSED list:  ( )
 			(i)
@@ -160,10 +147,10 @@ Written Spring 2016 for CSC447/547 AI class.
 			(not (member child CLOSED :test #'equal-states)))
 			
 			; add it to the OPEN list
-			(progn
+			(prodepth
 				(setf nodes-distinct (+ 1 nodes-distinct ))
-				(setf (node-gn child) (+ 1 (node-gn curNode)))
-				(setf (node-fn child) (+ 1 (node-gn curNode) (funcall heuristic (node-state child) N)))
+				(setf (node-depth child) (+ 1 (node-depth curNode)))
+				(setf (node-fn child) (+ 1 (node-depth curNode) (funcall heuristic (node-state child) N)))
 				(setf OPEN (append OPEN (list child)))
 			)
 			
@@ -173,27 +160,3 @@ Written Spring 2016 for CSC447/547 AI class.
 		
 	)
 )	
-;--------------------------------------------------------------------------
-
-; Build-solution takes a state and a list of (state parent) pairs
-; and constructs the list of states that led to the current state
-; by tracing back through the parents to the start node (nil parent).
-(defun build-solution (node node-list)
-	(do
-		((path (list (node-state node))))        ; local loop var
-		((null (node-parent node)) path)         ; termination condition
-		
-		; find the parent of the current node
-		(setf node (member-state (node-parent node) node-list))
-		
-		; add it to the path
-		(setf path (cons (node-state node) path))
-	)
-)
-
-; Member-state looks for a node on the node-list with the same state.
-(defun member-state (state node-list)
-	(dolist (node node-list)
-		(when (equal state (node-state node)) (return node))
-	)
-)
