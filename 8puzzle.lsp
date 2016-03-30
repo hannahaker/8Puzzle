@@ -1,4 +1,4 @@
-
+;********************************* 8puzzle.lsp ********************************
 (load (merge-pathnames "utilities.lsp" *load-truename*))
 (load (merge-pathnames "printstates.lsp" *load-truename*))
 (load (merge-pathnames "astar.lsp" *load-truename*))
@@ -7,6 +7,21 @@
 (load (merge-pathnames "fileio.lsp" *load-truename*))
 (load (merge-pathnames "BFS.lsp" *load-truename*))
 
+#|*****************************************************************************  
+  Function:		8puzzle 
+  
+  Description: 		
+	
+		This function checks if a puzzle state is a valid puzzle. The function
+	Also checks if the puzzle state is solvable by using the function provided
+	at www.mcs.sdsmt.edu/csc447/Assignments/PA2/solvable.lsp. Lastly, the 
+	function calls the three searches BFS, DFS, and A*
+	
+  Parameters: 
+	puzzle - a puzzle state
+
+  Returns: None
+*****************************************************************************|#
 (defun 8puzzle (puzzle)
 	(if (validinput puzzle 3)
 		
@@ -24,6 +39,19 @@
 	(values)
 )
 
+#|*****************************************************************************  
+  Function:		Npuzzle 
+  
+  Description: 		
+	
+		This function checks if a NxN puzzle is a valid puzzle. Then calls the
+	three searches BFS, DFS, A*.
+	
+  Parameters: 
+	puzzle - a puzzle state
+
+  Returns: None
+*****************************************************************************|#
 (defun Npuzzle (puzzle N)
 	(if (validinput puzzle N)
 	
@@ -39,6 +67,20 @@
 	(values)
 )
 
+#|*****************************************************************************  
+  Function:		validinput 
+  
+  Description: 		
+	
+		This function checks if the puzzle provided is valid for either
+	8x8 or NxN.
+	
+  Parameters: 
+	puzsize - size of the puzzle
+
+  Returns: T   - if a valid puzzle
+		   nil - if not a valid puzzle
+*****************************************************************************|#
 (defun validinput (puzzle puzsize)
 	(let ((listvalid) (i))
 		(setf listvalid T)
