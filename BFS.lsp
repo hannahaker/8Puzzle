@@ -1,5 +1,5 @@
 #|
-***** SEARCH.LSP *****
+***** BFS.LSP ******************************************************************
 
 General-purpose exhaustive search routine includes both breadth-first
 search and depth-first search. Uses graph search with OPEN and CLOSED
@@ -21,6 +21,7 @@ Written Spring 2016 for CSC447/547 AI class.
 
 Modifications:
 
+********************************************************************************
 |#
 
 (defun bfs (start N)
