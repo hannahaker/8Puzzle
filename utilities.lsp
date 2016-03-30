@@ -1,3 +1,17 @@
+#|****************************** GLOBALS ************************************|#
+
+(defvar *goal-states* (list '(1 2 3 8 0 4 7 6 5) 						 
+						  '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0))) 
+
+;globals for search statistics
+(defvar *nodes-distinct* 0)	
+(defvar *nodes-generated* 0)
+(defvar *nodes-expanded* 0)
+
+#|****************************** STRUCTS ***********************************|#
+; Node structure: stores state, parent, depth, and f'(n).
+(defstruct node state parent depth fn)
+
 #|*****************************************************************************
   Function:		goal-state?
   
@@ -14,17 +28,6 @@
 		   NIL - If the provided list is not identical to the goal state.
 *****************************************************************************|#
 (defun goal-state? (L) (equal L '(1 2 3 8 0 4 7 6 5)))
-
-(defvar *goal-states* (list '(1 2 3 8 0 4 7 6 5) 						 
-						  '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 0))) 
-
-;globals for search statistics
-(defvar *nodes-distinct* 0)	
-(defvar *nodes-generated* 0)
-(defvar *nodes-expanded* 0)
-
-; Node structure: stores state, parent, depth, and f'(n).
-(defstruct node state parent depth fn)
 
 #|*****************************************************************************
   Author: 		Dr. John Weiss
@@ -180,3 +183,37 @@
 		(return-from swap M) ;return a list with elem1 and elem2 swapped.
 	)
 )
+
+#|*****************************************************************************
+  Function:		solvable, disorder
+  
+	The SOLVABLE function returns T if a given 8-puzzle position is solvable,
+NIL otherwise.
+	
+Usage:    (solvable L)
+          where L is a 9-element list such as (1 2 3 8 0 4 7 6 5)
+
+Reference:  "Mathematical Games and Pastimes", p.79-85,
+             A.P.Domoryad, Macmillan, 1964.
+
+Written 03/88 by John M. Weiss, Ph.D.
+*****************************************************************************|#
+(defvar *flag*)
+
+(defun solvable (L)
+    (setf *flag* nil)                               ; global *flag*
+    (mapcar #'(lambda (elem) (disorder elem L)) L)
+    (eq *flag* (evenp (position 0 L)))
+)
+
+(defun disorder (elem L)
+    (cond
+        ((eq (car L) elem))
+        ((> (car L) elem)
+            (setf *flag* (not *flag*))
+            (disorder elem (cdr L))
+        )
+        (t (disorder elem (cdr L)))
+    )
+)
+
