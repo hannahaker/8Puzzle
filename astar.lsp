@@ -20,6 +20,20 @@ Written Spring 2016 for CSC447/547 AI class.
 
 ;--------------------------------------------------------------------------
 
+#|*****************************************************************************  
+Author: Hannah Aker, Savoy Schuler, Derek Lane
+
+Function:		misplacedTiles
+
+Description: 		
+
+This function implements the admissible heuristic Misplaced Tiles which
+is the sum of the number of tiles that are not in the correct place.
+
+Parameters: 
+state 	   	   - a puzzle state.
+N  			   - size of the puzzle.
+*****************************************************************************|#
 ;Admissible Heuristic #1: Misplaced Tiles - sum number of tiles not in correct place
 (defun misplacedTiles (state N) 
 	(let ((sum 0) (goal (nth (- N 3) *goal-states*)))
@@ -34,7 +48,22 @@ Written Spring 2016 for CSC447/547 AI class.
 		sum
 	)
 )
-;Admissible Heuristic #2: Manhattan Distance - sum of number of rows and columns each tile is away from its correct place
+
+#|*****************************************************************************  
+Author: Hannah Aker, Savoy Schuler, Derek Lane
+
+Function:		manhattanDistance
+
+Description: 		
+
+This function implements the admissible Manhattan Distance heuristic.
+Which is a sum of the number of rows and columns each tile is away from its
+correct place.
+
+Parameters: 
+state 	   - a puzzle state.
+N  		   - size of the puzzle.
+*****************************************************************************|#
 (defun manhattanDistance (state N) 
 	(let ((sum 0) (goal (nth (- N 3) *goal-states*)) (j))
 		;dotimes N*N (8 puzzle is 3 by 3, N=3)
@@ -49,7 +78,24 @@ Written Spring 2016 for CSC447/547 AI class.
 		sum
 	)
 )
-;Inadmissible Heuristic: Nilsson's Sequence - sum of Manhattan distance and sequence score ( +2 for each tile not followed by correct successor and +1 for the zero in the wrong place)
+
+#|*****************************************************************************  
+Author: Hannah Aker, Savoy Schuler, Derek Lane
+
+Function:		printstates
+
+Description: 		
+
+This function implements the inadmissible Nilsson's Sequence heuristic.
+It uses the sum of Manhattan distance and sequence score.
+
+Sequence score - +2 for each tile not followed by correct successor and
++1 for the zero (blank) in the wrong place.
+
+Parameters: 
+state 	   - a puzzle state.
+N  		   - size of the puzzle.
+*****************************************************************************|#
 (defun nilssonsSequence (state N) 
 	;run manhattanDistance heuristic
 	(let ((sum 0) (goal (nth (- N 3) *goal-states*)) (i) (j) (order '(0 1 2 5 8 7 6 3)) )
@@ -77,8 +123,21 @@ Written Spring 2016 for CSC447/547 AI class.
 		sum
 	)
 )
-;--------------------------------------------------------------------------
 
+#|*****************************************************************************  
+Author: Hannah Aker, Savoy Schuler, Derek Lane
+
+Function:		astar
+
+Description: 		
+
+This function outputs the goal path of the A* search with a count of
+OPEN and CLOSED nodes.
+
+Parameters: 
+start	   	   - a puzzle state
+N  			   - size of the puzzle
+*****************************************************************************|#
 ; A* star implements an OPEN list and uses a heuristic to select the next node to explore
 (defun astar (start N)
 	(let ((solution))
@@ -101,7 +160,21 @@ Written Spring 2016 for CSC447/547 AI class.
 )
 
 
+#|*****************************************************************************  
+Authors: Hannah Aker, Savoy Schuler, Derek Lane
 
+Function:		search_astar
+
+Description: 		
+
+This function is the actual A* algorithm, utilizing OPEN lists, CLOSED
+lists, and heuristics it will find an optimal path to the goal state.
+
+Parameters: 
+start 	       - a puzzle state.
+heuristic	   - heuristic to apply
+N  			   - size of the puzzle.
+*****************************************************************************|#
 ; Given a start state and a search type (BFS or DFS), return a path from the start to the goal.
 (defun search_astar (start heuristic N)
 	(setf *nodes-distinct* 0) 
@@ -156,7 +229,5 @@ Written Spring 2016 for CSC447/547 AI class.
 			
 			)
 		)
-		
-		
 	)
 )	
